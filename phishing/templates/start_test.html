@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- start_test.html -->
+<form method="post" action="{% url 'start_phishing_test' test.id %}">
+    {% csrf_token %}
+    <button type="submit">Start Test</button>
+</form>
+
+<form method="post" action="{% url 'stop_phishing_test' test.id %}">
+    {% csrf_token %}
+    <button type="submit">Stop Test</button>
+</form>
+
+</body>
+</html>

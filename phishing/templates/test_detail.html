@@ -1,0 +1,47 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}Тест{% endblock %}
+{% block stylesheet %}{% static "css/test_detail.css" %}{% endblock stylesheet %}
+
+{% block content %}
+<p><a href="{% url 'created_tests' %}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Назад</a></p>
+<h1>
+    {{ test.name }} {% if test.active %}<div class="spinner-grow text-success" role="status"></div>{% else %}{% endif %}
+    <div class="status-indicator"></div> <!-- Зеленый или серый индикатор статуса -->
+</h1>
+
+<br>
+<p><h3 style="display: inline;">Описание: </h3>{{ test.description }}</p>
+<p>Создано: {{ test.created_at }}</p>
+<p>Активно: {% if test.active %}Да{% else %}Нет{% endif %}</p>
+<br>
+<h2>Сотрудники:</h2>
+<ul>
+    {% for employee, link in employee_links  %}
+    <li>{{ employee.name }} - <a href="{{ link }}">{{ link }}</a></li>
+    {% endfor %}
+</ul>
+
+<div class="toggle-container">
+    <label for="toggleSwitch">{% if test.active %}Тест активен{% else %}Тест не активен{% endif %}</label>
+    <label class="switch">
+        <input type="checkbox" id="toggleSwitch" {% if test.active %} checked {% endif %}>
+        <span class="slider"></span>
+    </label>
+</div>
+
+<!-- Скрипт для отправки формы при переключении переключателя -->
+<script src="{% static 'js/start_stop_test.js' %}"></script>
+
+<!-- Форма для старта теста -->
+<form id="startTestForm" method="post" action="{% url 'start_phishing_test' test.id %}" style="display: none;">
+    {% csrf_token %}
+</form>
+
+<!-- Форма для остановки теста -->
+<form id="stopTestForm" method="post" action="{% url 'stop_phishing_test' test.id %}" style="display: none;">
+    {% csrf_token %}
+</form>
+
+{% endblock %}

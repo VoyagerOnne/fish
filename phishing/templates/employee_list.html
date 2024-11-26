@@ -1,0 +1,37 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}Список сотрудников{% endblock %}
+{% block stylesheet %}{% static "css/employees_list.css" %}{% endblock stylesheet %}
+
+{% block content %}
+<h2>Список сотрудников</h2>
+<table class="employee-table">
+    <thead>
+    <tr>
+        <th>Имя</th>
+        <th>Email</th>
+        <th>Департамент</th>
+        <th>Интересы</th>
+        <th>Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for employee in employees %}
+        <tr>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.department }}</td>
+            <td>{% for interests in employee.interests.all %}{{ interests.tag }}, {% endfor %}</td>
+            <td>
+                <form method="POST" style="display:inline;" action="{% url 'employee_delete' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="employees" value="{{ employee.id }}">
+                    <button class="delete-btn">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

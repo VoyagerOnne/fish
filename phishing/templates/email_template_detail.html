@@ -1,0 +1,21 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}Создать тестирование{% endblock %}
+{% block stylesheet %}{% static "css/email_template_detail.css" %}{% endblock stylesheet %}
+
+{% block content %}
+<div class="email-template">
+    <h2>Тема: {{ template.subject }}</h2>
+    <hr>
+    <div class="email-body">
+        <p><strong>Тело письма:</strong></p>
+        <div style="border:1px solid #ddd; padding:10px; background-color: #f9f9f9;">
+            {{ template.body|safe }}
+        </div>
+    </div>
+    <hr>
+    <p><strong>Дата создания:</strong> {{ template.created_at }}</p><br>
+    <p><a href="{% url 'email_templates_list' %}">Вернуться к списку шаблонов</a></p>
+</div>
+{% endblock %}

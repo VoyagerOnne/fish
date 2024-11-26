@@ -1,0 +1,66 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}Создание шаблона{% endblock %}
+{% block stylesheet %}{% static "css/forms.css" %}{% endblock stylesheet %}
+
+{% block content %}
+<h2>Create Phishing Test</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="id_name">Название шаблона:</label>
+        {{ form.name }}
+    </div>
+    <div class="form-group">
+        <label for="id_subject">Тема письма:</label>
+        {{ form.subject }}
+    </div>
+    <div class="row align-items-start">
+        <div class="col-7">
+            <div class="form-group col">
+                <label for="id_body">Тело письма:</label>
+                {{ form.body }}
+            </div>
+        </div>
+
+        <div class="form-group col-3 mt-5">
+            <p>
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+                    Подсказка
+                </button>
+            </p>
+            <div style="min-height: 120px;">
+                <div class="collapse collapse-horizontal" id="collapseWidthExample">
+                    <div class="card card-body" style="width: 350px;">
+                        Вы можете указать переменные в теле письма. Они автоматически заполнятся во время отправки письма.<br>
+                        Переменные:<br>
+                        1. user_name   : Имя сотрудника,<br>
+                        2. user_email  : Электронная почта,<br>
+                        3. unique_link : Сгенерированная ссылка<br>
+                        4. unique_link_p: Сгенерированная ссылка c указанием протокола
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_interests">Ориентированность интересов:</label>
+        {{ form.interests }}
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('id_body');
+</script>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{% static 'js/add_test.js' %}"></script>
+{% endblock %}

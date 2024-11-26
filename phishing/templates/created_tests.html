@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}Создать тестирование{% endblock %}
+{% block stylesheet %}{% static "css/employees_list.css" %}{% endblock stylesheet %}
+
+{% block content %}
+<h2>Список созданных тестов</h2>
+<table class="employee-table">
+    <thead>
+    <tr>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Дата создания</th>
+        <th>Количество задействованных сотрудников</th>
+        <th>Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for test in phishing_tests %}
+    <tr>
+        <div class="hstack gap-3">
+            <td class="p-2">{{ test.name }} <div class="vr"></div> {% if test.active %}
+                <span class="badge rounded-pill text-bg-success p-1 text-end">Запущен</span>{% else %}
+                <span class="badge rounded-pill text-bg-secondary p-1 text-end ">Остановлен</span>{% endif %}</td>
+        </div>
+        <td>{{ test.description }}</td>
+        <td>{{ test.created_at }}</td>
+        <td>{{ test.employees.count }}</td>
+        <td>
+            <form method="POST" style="display:inline;" action="{% url 'test_delete' test.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="employees" value="{{ test.id }}">
+                <button class="delete-btn">Удалить</button>
+            </form>
+            <a href="{% url 'test_detail' test.id %}"><button class="delete-btn" style="background-color: #11c0cf;">Подробно</button></a>
+            <a href="{% url 'campaign_results' test.id %}"><button class="delete-btn" style="background-color: #aaefab;">Отчет</button></a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

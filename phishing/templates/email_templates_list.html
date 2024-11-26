@@ -1,0 +1,41 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}Создать тестирование{% endblock %}
+{% block stylesheet %}{% static 'css/employees_list.css' %}{% endblock stylesheet %}
+
+{% block content %}
+<h2>Список шаблонов писем</h2>
+
+<table class="employee-table">
+    <thead>
+    <tr>
+        <th>Название</th>
+        <th>Ориентирован на</th>
+        <th>Дата создания</th>
+        <th>Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for template in templates %}
+    <tr>
+        <td>{{ template.name }}</td>
+        <td>{{ template.interests }}</td>
+        <td>{{ template.created_at }}</td>
+        <td>
+            <form method="POST" style="display:inline;" action="{% url 'email_template_delete' template.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="employees" value="{{ template.id }}">
+                <button class="delete-btn">Удалить</button>
+            </form>
+            <a href="{% url 'email_template_detail' template.id %}"><button class="delete-btn" style="background-color: #11c0cf;">Подробно</button></a>
+        </td>
+    </tr>
+    {% empty %}
+    <li class="list-group-item">Нет доступных шаблонов.</li>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

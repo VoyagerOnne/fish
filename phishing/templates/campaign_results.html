@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ phishing_test.name }} - Results</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Результаты: {{ phishing_test.name }}</h1>
+
+    <!-- Buttons -->
+    <div class="mb-3">
+        <a href="{% url 'created_tests' %}" class="btn btn-secondary">Обратно</a>
+        <a href="{% url 'export_csv' phishing_test.id %}" class="btn btn-success">Экспортировать в CSV</a>
+        <a href="#" class="btn btn-primary" onclick="window.location.reload();">Обновить</a>
+    </div>
+
+    <!-- Campaign Timeline -->
+    <div class="card mb-5">
+        <div class="card-body">
+            {% if phishing_test.active %}
+            <h5>Тестирование еще не завершено</h5>
+            {% else %}
+            <h5>Результаты теста</h5>
+            {% endif %}
+            <!-- Здесь можно будет сделать временную шкалу -->
+        </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="row text-center mb-4">
+        <div class="col-md-3">
+            <h3>{{ total_emails_sent }} <br>Сообщений отправлено</h3>
+        </div>
+        <div class="col-md-3">
+            <h3>{{ total_clicked_link }} <br>Перешли по ссылкам</h3>
+        </div>
+        <div class="col-md-3">
+            <h3>{{ total_submitted_data }} <br>Пытались ввести данные</h3>
+        </div>
+        <div class="col-md-3">
+            <h3>{{ total_submitted_correct_data }} <br>Ввели корректные данные</h3>
+        </div>
+    </div><br>
+
+    <!-- Detailed Results -->
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Email</th>
+            <th>Департамент</th>
+            <th>Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for result in test_results %}
+        <tr>
+            <td>{{ result.employee.name }}</td>
+            <td>{{ result.employee.email }}</td>
+            <td>{{ result.employee.department }}</td>
+            <td>
+                {% if result.submitted_correct_data %}
+                <span class="badge badge-danger">Пользователь ввел корректные данные!</span>
+                {% elif result.submitted_data %}
+                <span class="badge badge-warning">Пользователь пытался ввести данные!</span>
+                {% elif result.clicked_link %}
+                <span class="badge badge-info">Пользователь перешел по ссылке</span>
+                {% else %}
+                <span class="badge badge-secondary">Сообщение было отправлено</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

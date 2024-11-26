@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить сотрудника</title>
+</head>
+<body>
+<h1>Добавить сотрудника</h1>
+
+<!-- Форма для ручного добавления сотрудника -->
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" name="submit_manual">Добавить сотрудника вручную</button>
+</form>
+
+<hr>
+
+<!-- Форма для загрузки файла -->
+<h2>Загрузить файл сотрудников (CSV)</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ file_form.as_p }}
+    <button type="submit" name="submit_file">Загрузить файл</button>
+</form>
+
+<a href="{% url 'home' %}">Вернуться на главную</a>
+</body>
+</html>

@@ -1,0 +1,61 @@
+{% extends "index.html" %}
+{% load static %}
+{% load form_tags %}
+
+{% block title %}Создание тестирования{% endblock %}
+{% block stylesheet %}{% static "css/add_employee.css" %}{% endblock stylesheet %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center">Добавить сотрудника</h2>
+
+    <div class="form-section">
+        <h4>Добавить сотрудника вручную</h4>
+        <form method="post" action="" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="id_name" class="form-label">Name:</label>
+                    {{ form.name|add_class:"form-control" }}
+                </div>
+                <div class="col-md-6">
+                    <label for="id_email" class="form-label">Email:</label>
+                    {{ form.email|add_class:"form-control" }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="id_department" class="form-label">Department:</label>
+                    {{ form.department|add_class:"form-control" }}
+                </div>
+                <div class="col-md-6">
+                    <label for="id_interests" class="form-label">Interests:</label>
+                    {{ form.interests|add_class:"form-select" }}
+                </div>
+            </div>
+            <button type="submit" name="submit_manual" class="btn btn-primary mt-3">Добавить сотрудника вручную</button>
+        </form>
+    </div>
+
+    <hr>
+
+    <div class="form-section">
+        <h4>Загрузить файл сотрудников (CSV)</h4>
+        <div class="file-upload">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="file-upload">Выберите файл</label><br>
+                <span id="file-name"></span>
+                <input id="file-upload" type="file" name="file" style="display: none;" onchange="updateFileName()">
+                <br>
+                <button type="submit" name="submit_file" class="btn btn-success mt-3">Загрузить файл</button>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+<script src="{% static 'js/add_employee.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}

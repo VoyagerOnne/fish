@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>{% block title %}Pen-Tester Dashboard{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% block stylesheet %}{% endblock stylesheet %}">
+</head>
+<body>
+<!-- Навбар -->
+<header class="navbar">
+    <div class="navbar-left">
+        <h1>Pen-Tester Dashboard</h1>
+    </div>
+    <div class="navbar-right">
+        <div class="profile">
+            <span>Добро пожаловать, {{request.user.username}}</span>
+            <a href="{% url 'logout' %}"><button id="logout">Выйти</button></a>
+        </div>
+    </div>
+</header>
+
+<!-- Основной макет -->
+<div class="main-container">
+    <!-- Боковая панель -->
+    <nav class="sidebar">
+        <ul>
+            <li>
+                <a href="javascript:void(0)" class="dropdown-btn">Сотрудники</a>
+                <ul class="dropdown-container">
+                    <li style="background-color: #3f404a;"><a href="{% url 'add_employee' %}">Добавить сотрудников организации</a></li>
+                    <li style="background-color: #3f404a;"><a href="{% url 'employee_list' %}">Список сотрудников организации</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:void(0)" class="dropdown-btn">Тесты</a>
+                <ul class="dropdown-container">
+                    <li style="background-color: #3f404a;"><a href="{% url 'add_test' %}">Создать тест</a></li>
+                    <li style="background-color: #3f404a;"><a href="{% url 'created_tests' %}">Список созданных тестов</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:void(0)" class="dropdown-btn">Шаблоны</a>
+                <ul class="dropdown-container">
+                    <li style="background-color: #3f404a;"><a href="{% url 'email_template_create' %}">Создать шаблон</a></li>
+                    <li style="background-color: #3f404a;"><a href="{% url 'email_template_list' %}">Список созданных шаблонов</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'home' %}">На главную</a></li>
+        </ul>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="content">
+        <!-- Всплывающее сообщение -->
+        {% for message in messages %}
+        <div class="alert">
+            <h5>Новые уведомления:</h5>
+                <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+        <br>
+
+        {% block content%}
+            <p>- Активные тестирования:</p>
+            {% for test in tests %}
+                <div class="card">
+                    <div class="card-header">
+                        Дата создания: {{ test.created_at }}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ test.name }}</h5>
+                        <p class="card-text">{{ test.description }}</p>
+                        <a href="{% url 'test_detail' test.id %}" class="btn btn-primary">Подробно</a>
+                    </div>
+                </div>
+        <br>
+            {% endfor %}
+        {% endblock content %}
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="{% static 'js/index.js' %}"></script>
+</body>
+</html>
